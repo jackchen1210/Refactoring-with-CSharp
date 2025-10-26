@@ -20,17 +20,21 @@ public class FlightTracker {
         }
     }
 
-    public Flight? MarkFlightDelayed(string id, DateTime newDepartureTime) {
-        Flight? flight = FindFlightById(id);
+    public void DisplayMatchingFlights(List<Flight> flights,Func<Flight,bool> shouldDisplay) {
+        foreach (var flight in flights) {
+            if (shouldDisplay(flight)) {
+                Console.WriteLine(flight);
+            }
+        }
+    }
 
-        if (flight != null) {
+    public Flight? MarkFlightDelayed(string id, DateTime newDepartureTime) {
+        Action<Flight> updateAction = (flight) => {
             flight.DepartureTime = newDepartureTime;
             flight.Status = FlightStatus.Delayed;
             Console.WriteLine($"{id} delayed until {Format(newDepartureTime)}");
-        } else {
-            Console.WriteLine($"{id} could not be found");
-        }
-        return flight;
+        };
+        return UpdateFlight(id, updateAction);
     }
 
     public Flight? MarkFlightArrived(string id, DateTime arrivalTime, string gate) {
@@ -58,11 +62,19 @@ public class FlightTracker {
         return flight;
     }
 
-    public Flight? FindFlightById(string id) {
-        return _flights.FirstOrDefault(f => f.Id == id);
-    }
+    public Flight? FindFlightById(string id) => _flights.FirstOrDefault(f => f.Id == id);
 
     private string Format(DateTime time) {
         return time.ToString("ddd MMM dd HH:mm tt");
+    }
+
+    private Flight? UpdateFlight(string id, Action<Flight> updateAction) {
+        Flight? flight = FindFlightById(id);
+        if (flight != null) { 
+            updateAction(flight);
+        } else {
+            Console.WriteLine($"{id} could not be found");
+        }
+        return flight;
     }
 }

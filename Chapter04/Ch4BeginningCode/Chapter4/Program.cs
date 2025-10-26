@@ -28,7 +28,7 @@ internal class Program
     private static void AddRandomFlight(FlightTracker flightTracker, Random rand, string[] destinations, string[] gates, int nextId, DateTime nextFlightTime) {
         string dest = destinations[rand.Next(destinations.Length)];
         string gate = gates[rand.Next(gates.Length)];
-        Flight flight = flightTracker.ScheduleNewFlight($"CSA{nextId}", dest, nextFlightTime, gate);
+        Flight flight = flightTracker.ScheduleNewFlight($"CSA{nextId}", dest, nextFlightTime);
 
         _ = rand.Next(8) switch {
             0 => flight.Status = FlightStatus.Inbound,

@@ -24,7 +24,7 @@ namespace PacktCloudySkiesAirTests.Chapter4
             var gate = "A02";
 
             // Act
-            var flight = _target.ScheduleNewFlight(flightId, destination, departureTime, gate);
+            var flight = _target.ScheduleNewFlight(flightId, destination, departureTime);
 
             // Assert
             flight.ShouldNotBeNull();
@@ -41,10 +41,10 @@ namespace PacktCloudySkiesAirTests.Chapter4
             var flightId = "F01";
             var originalDepartureTime = DateTime.Now.AddHours(1);
             var newDepartureTime = DateTime.Now.AddHours(2);
-            _target.ScheduleNewFlight(flightId, "New York", originalDepartureTime, "A01");
+            _target.ScheduleNewFlight(flightId, "New York", originalDepartureTime);
 
             // Act
-            var actual = _target.DelayFlight(flightId, newDepartureTime);
+            var actual = _target.MarkFlightDelayed(flightId, newDepartureTime);
 
             // Assert
             Assert.NotNull(actual);
@@ -58,10 +58,10 @@ namespace PacktCloudySkiesAirTests.Chapter4
             // Arrange
             var flightId = "F01";
             var arrivalTime = DateTime.Now.AddMinutes(15);
-            _target.ScheduleNewFlight(flightId, "New York", DateTime.Now, "A01");
+            _target.ScheduleNewFlight(flightId, "New York", DateTime.Now);
 
             // Act
-            var actual = _target.MarkFlightArrived(arrivalTime, flightId);
+            var actual = _target.MarkFlightArrived(flightId, arrivalTime, "A4");
 
             // Assert
             Assert.NotNull(actual);
@@ -76,7 +76,7 @@ namespace PacktCloudySkiesAirTests.Chapter4
             var flightId = "F01";
             var originalDepartureTime = DateTime.Now;
             var departureTime = DateTime.Now.AddMinutes(15);
-            _target.ScheduleNewFlight(flightId, "New York", originalDepartureTime, "A01");
+            _target.ScheduleNewFlight(flightId, "New York", originalDepartureTime);
 
             // Act
             var actual = _target.MarkFlightDeparted(flightId, departureTime);
